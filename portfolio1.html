@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Inventory & Delivery Report</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom font for better aesthetics */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Style for the modal overlay */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        /* Ensure modal content is scrollable if too tall */
+        .modal-content {
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class="max-w-7xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Header Section -->
+        <header class="p-6 bg-indigo-600 text-white text-center rounded-t-2xl">
+            <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">Warehouse Operations Dashboard</h1>
+            <p class="text-indigo-200 text-lg">Inventory and Outgoing Deliveries</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
+            <!-- Inventory Summary Section -->
+            <section class="lg:col-span-1 bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b-2 border-indigo-200">Inventory Summary</h2>
+                <div class="space-y-4" id="inventory-list">
+                    <!-- Inventory Item 1 -->
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-lg font-medium text-gray-700">Product A - <span class="font-bold">SKU123</span></span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-semibold text-indigo-700">1250 pcs</span>
+                            <button class="view-details-btn bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md transition duration-300" data-sku="SKU123">View Details</button>
+                        </div>
+                    </div>
+                    <!-- Inventory Item 2 -->
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-lg font-medium text-gray-700">Product B - <span class="font-bold">SKU456</span></span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-semibold text-indigo-700">890 pcs</span>
+                            <button class="view-details-btn bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md transition duration-300" data-sku="SKU456">View Details</button>
+                        </div>
+                    </div>
+                    <!-- Inventory Item 3 -->
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-lg font-medium text-gray-700">Product C - <span class="font-bold">SKU789</span></span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-semibold text-indigo-700">340 pcs</span>
+                            <button class="view-details-btn bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md transition duration-300" data-sku="SKU789">View Details</button>
+                        </div>
+                    </div>
+                    <!-- Inventory Item 4 -->
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-lg font-medium text-gray-700">Product D - <span class="font-bold">SKU012</span></span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-semibold text-indigo-700">2100 pcs</span>
+                            <button class="view-details-btn bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md transition duration-300" data-sku="SKU012">View Details</button>
+                        </div>
+                    </div>
+                    <!-- Inventory Item 5 -->
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <span class="text-lg font-medium text-gray-700">Product E - <span class="font-bold">SKU345</span></span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xl font-semibold text-indigo-700">75 pcs</span>
+                            <button class="view-details-btn bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md transition duration-300" data-sku="SKU345">View Details</button>
+                        </div>
+                    </div>
+                    <!-- Total Stock -->
+                    <div class="pt-4 border-t border-indigo-100 mt-4 text-right">
+                        <p class="text-xl font-bold text-gray-900">Total Stock Items: <span class="text-indigo-600">5</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Delivery Report Section -->
+            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b-2 border-indigo-200">Upcoming Deliveries</h2>
+                <!-- Search Bar for Deliveries -->
+                <div class="mb-6 flex items-center bg-gray-50 rounded-full px-4 py-2 shadow-sm border border-gray-200">
+                    <i class="fas fa-search text-gray-400 mr-3"></i>
+                    <input type="text" id="delivery-search" placeholder="Search deliveries by ID, branch, or status..." class="flex-grow bg-transparent outline-none text-gray-700 placeholder-gray-400">
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full leading-normal" id="delivery-table">
+                        <thead>
+                            <tr class="bg-gray-100 border-b border-gray-200 text-gray-700 uppercase text-sm font-semibold tracking-wider">
+                                <th class="px-5 py-3 text-left rounded-tl-lg">Delivery ID</th>
+                                <th class="px-5 py-3 text-left">Destination Branch</th>
+                                <th class="px-5 py-3 text-left">Delivery Date</th>
+                                <th class="px-5 py-3 text-left">Delivery Time</th>
+                                <th class="px-5 py-3 text-left">Items Count</th>
+                                <th class="px-5 py-3 text-left rounded-tr-lg">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Delivery Row 1 -->
+                            <tr class="hover:bg-gray-50 transition duration-200 ease-in-out border-b border-gray-100">
+                                <td class="px-5 py-4 text-sm text-gray-900">DEL-001</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">Branch A, Manila</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">2025-06-15</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">09:00 AM</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">300</td>
+                                <td class="px-5 py-4 text-sm">
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Scheduled</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- Delivery Row 2 -->
+                            <tr class="hover:bg-gray-50 transition duration-200 ease-in-out border-b border-gray-100">
+                                <td class="px-5 py-4 text-sm text-gray-900">DEL-002</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">Branch B, Cebu</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">2025-06-16</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">02:30 PM</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">150</td>
+                                <td class="px-5 py-4 text-sm">
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Scheduled</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- Delivery Row 3 -->
+                            <tr class="hover:bg-gray-50 transition duration-200 ease-in-out border-b border-gray-100">
+                                <td class="px-5 py-4 text-sm text-gray-900">DEL-003</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">Branch C, Davao</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">2025-06-17</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">10:00 AM</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">500</td>
+                                <td class="px-5 py-4 text-sm">
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Pending Confirmation</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- Delivery Row 4 -->
+                            <tr class="hover:bg-gray-50 transition duration-200 ease-in-out border-b border-gray-100">
+                                <td class="px-5 py-4 text-sm text-gray-900">DEL-004</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">Branch D, Pampanga</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">2025-06-18</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">08:00 AM</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">200</td>
+                                <td class="px-5 py-4 text-sm">
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Scheduled</span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <!-- Delivery Row 5 -->
+                            <tr class="hover:bg-gray-50 transition duration-200 ease-in-out">
+                                <td class="px-5 py-4 text-sm text-gray-900">DEL-005</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">Branch E, Iloilo</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">2025-06-19</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">01:00 PM</td>
+                                <td class="px-5 py-4 text-sm text-gray-900">450</td>
+                                <td class="px-5 py-4 text-sm">
+                                    <span class="relative inline-block px-3 py-1 font-semibold text-yellow-900 leading-tight">
+                                        <span aria-hidden="true" class="absolute inset-0 bg-yellow-200 opacity-50 rounded-full"></span>
+                                        <span class="relative">Pending Confirmation</span>
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Section -->
+        <footer class="p-4 bg-gray-800 text-white text-center text-sm rounded-b-2xl mt-6">
+            <p>&copy; 2025 Warehouse Management System. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Inventory Item Details Modal -->
+    <div id="inventory-details-modal" class="hidden fixed inset-0 flex items-center justify-center modal-overlay">
+        <div class="bg-white p-6 rounded-xl shadow-2xl w-11/12 max-w-lg modal-content relative">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4 pb-2 border-b border-indigo-200" id="modal-product-name">Product Details</h3>
+            <div class="space-y-3 text-gray-700">
+                <p><strong>SKU:</strong> <span id="modal-sku"></span></p>
+                <p><strong>Current Stock:</strong> <span id="modal-stock"></span></p>
+                <p><strong>Location:</strong> <span id="modal-location"></span></p>
+                <p><strong>Last Updated:</strong> <span id="modal-last-updated"></span></p>
+                <p><strong>Description:</strong> <span id="modal-description"></span></p>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-5 rounded-lg shadow-md transition duration-300" id="modal-ok-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Delivery Table Search/Filter Functionality ---
+            const deliverySearchInput = document.getElementById('delivery-search');
+            const deliveryTableBody = document.querySelector('#delivery-table tbody');
+            const deliveryTableRows = deliveryTableBody.querySelectorAll('tr');
+
+            deliverySearchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase(); // Get the search term and convert to lowercase
+
+                deliveryTableRows.forEach(row => {
+                    const rowText = row.innerText.toLowerCase(); // Get all text in the row and convert to lowercase
+                    if (rowText.includes(searchTerm)) {
+                        row.style.display = ''; // Show the row if it matches
+                    } else {
+                        row.style.display = 'none'; // Hide the row if it doesn't match
+                    }
+                });
+            });
+
+            // --- Inventory Item Details Modal Functionality ---
+            const inventoryDetailsModal = document.getElementById('inventory-details-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalOkBtn = document.getElementById('modal-ok-btn');
+            const viewDetailsButtons = document.querySelectorAll('.view-details-btn');
+
+            // Mock data for inventory details
+            const inventoryMockData = {
+                'SKU123': {
+                    name: 'Product A',
+                    stock: '1250 pcs',
+                    location: 'Aisle 1, Shelf 3',
+                    lastUpdated: '2025-06-10 14:30',
+                    description: 'High-demand electronics component, used in various assemblies.'
+                },
+                'SKU456': {
+                    name: 'Product B',
+                    stock: '890 pcs',
+                    location: 'Aisle 2, Bin 7',
+                    lastUpdated: '2025-06-11 09:15',
+                    description: 'Standard packaging material, essential for outgoing shipments.'
+                },
+                'SKU789': {
+                    name: 'Product C',
+                    stock: '340 pcs',
+                    location: 'Aisle 4, Rack 2',
+                    lastUpdated: '2025-06-09 11:00',
+                    description: 'Specialized industrial lubricant, sensitive to temperature changes.'
+                },
+                'SKU012': {
+                    name: 'Product D',
+                    stock: '2100 pcs',
+                    location: 'Bulk Storage 1',
+                    lastUpdated: '2025-06-11 16:45',
+                    description: 'Common raw material, frequently restocked due to high consumption.'
+                },
+                'SKU345': {
+                    name: 'Product E',
+                    stock: '75 pcs',
+                    location: 'Secure Cabinet 5',
+                    lastUpdated: '2025-06-08 10:00',
+                    description: 'Limited edition high-value item, requires careful handling.'
+                }
+            };
+
+            // Function to open the modal
+            function openModal(sku) {
+                const data = inventoryMockData[sku];
+                if (data) {
+                    document.getElementById('modal-product-name').textContent = data.name + ' Details';
+                    document.getElementById('modal-sku').textContent = data.sku || sku; // Use SKU from data if available, otherwise fallback
+                    document.getElementById('modal-stock').textContent = data.stock;
+                    document.getElementById('modal-location').textContent = data.location;
+                    document.getElementById('modal-last-updated').textContent = data.lastUpdated;
+                    document.getElementById('modal-description').textContent = data.description;
+                    inventoryDetailsModal.classList.remove('hidden'); // Show the modal
+                } else {
+                    console.error('No data found for SKU:', sku);
+                }
+            }
+
+            // Function to close the modal
+            function closeModal() {
+                inventoryDetailsModal.classList.add('hidden'); // Hide the modal
+            }
+
+            // Add event listeners to all "View Details" buttons
+            viewDetailsButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const sku = this.dataset.sku; // Get the SKU from the data-sku attribute
+                    openModal(sku);
+                });
+            });
+
+            // Add event listeners to close modal buttons
+            closeModalBtn.addEventListener('click', closeModal);
+            modalOkBtn.addEventListener('click', closeModal);
+
+            // Close modal when clicking outside of it
+            inventoryDetailsModal.addEventListener('click', function(event) {
+                if (event.target === inventoryDetailsModal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

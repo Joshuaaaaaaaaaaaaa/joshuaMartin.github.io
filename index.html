@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Joshua - Web Designer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h1, .nav-link {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+    }
+    .glass {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    }
+    .profile-glow {
+      box-shadow: 0 0 0 8px rgba(99,102,241,0.08), 0 8px 32px 0 rgba(139,92,246,0.10);
+    }
+    .animated-gradient {
+      background: linear-gradient(120deg, #e0e7ff, #f3e8ff, #f0fdfa, #f1f5f9, #ede9fe);
+      background-size: 200% 200%;
+      animation: gradientMove 8s ease-in-out infinite;
+    }
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    .shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .shine::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.1) 100%);
+      transform: rotate(25deg);
+      animation: shineMove 3s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes shineMove {
+      0% {transform: translateX(-100%) rotate(25deg);}
+      100% {transform: translateX(100%) rotate(25deg);}
+    }
+    .nav-underline {
+      position: relative;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+    .nav-underline::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -2px;
+      transform: translateX(-50%) scaleX(0);
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(90deg, #6366f1 0%, #a78bfa 100%);
+      border-radius: 2px;
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+      z-index: 1;
+    }
+    .nav-underline:hover::after, .nav-underline.active::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+    .nav-underline:hover, .nav-underline.active {
+      color: #6366f1 !important;
+      text-shadow: 0 2px 8px rgba(99,102,241,0.10);
+    }
+    .nav-glass {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 16px 0 rgba(99,102,241,0.07);
+      border-radius: 9999px;
+      border: 1px solid rgba(99,102,241,0.08);
+    }
+    .nav-glass-fancy {
+      background: rgba(255,255,255,0.7);
+      border-radius: 2.5rem;
+    }
+    @media (min-width: 1024px) {
+      #portfolio-section {
+        margin-top: 400px;
+      }
+      #portfolio-section .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body class="animated-gradient min-h-screen text-gray-800">
+  <div id="home-section" class="min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <nav class="w-full flex justify-end items-center px-2 sm:px-12 py-4 fixed top-0 left-0 z-50">
+      <div class="nav-glass px-3 py-1.5 flex items-center gap-1.5 shadow-lg relative">
+        <!-- Mobile menu button -->
+        <button id="nav-toggle" type="button" class="sm:hidden flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-tr from-blue-100 via-purple-100 to-blue-200 shadow-xl hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-200" aria-label="Open menu">
+          <svg id="nav-toggle-icon" class="w-5 h-5 text-blue-500 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path id="nav-toggle-bar1" d="M4 7h16" stroke-linecap="round"/>
+            <path id="nav-toggle-bar2" d="M4 12h16" stroke-linecap="round"/>
+            <path id="nav-toggle-bar3" d="M4 17h16" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <!-- Navigation links -->
+        <ul id="nav-menu" class="flex gap-3 sm:gap-8 text-xs sm:text-base font-semibold
+          sm:flex
+          fixed sm:static top-16 right-2 left-auto sm:top-auto sm:right-auto sm:left-auto
+          bg-gradient-to-br from-blue-100/90 via-white/90 to-purple-100/90 sm:bg-transparent nav-glass-fancy sm:nav-glass
+          rounded-2xl sm:rounded-none shadow-2xl sm:shadow-none
+          flex-col sm:flex-row items-center sm:items-center
+          p-4 sm:p-0
+          transition-all duration-300
+          z-40
+          opacity-0 pointer-events-none sm:opacity-100 sm:pointer-events-auto
+          border border-blue-200/40
+          backdrop-blur-xl
+        ">
+          <li class="w-full">
+            <a href="index.html" onclick="event.preventDefault(); document.getElementById('home-section').scrollIntoView({ behavior: 'smooth' }); closeNavMenu();" class="nav-link nav-underline transition tracking-wide w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-blue-50/60 hover:text-blue-700 focus:bg-blue-100/80 focus:text-blue-700 duration-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-blue-400 animate-pulse sm:hidden"></span>
+              Home
+            </a>
+          </li>
+          <li class="w-full">
+            <a href="#about-section" onclick="event.preventDefault(); document.getElementById('about-section').scrollIntoView({ behavior: 'smooth' }); closeNavMenu();" class="nav-link nav-underline transition tracking-wide w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-blue-50/60 hover:text-blue-700 focus:bg-blue-100/80 focus:text-blue-700 duration-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-blue-300 animate-pulse sm:hidden"></span>
+              About
+            </a>
+          </li>
+          <li class="w-full">
+            <a href="#portfolio-section" onclick="event.preventDefault(); document.getElementById('portfolio-section').scrollIntoView({ behavior: 'smooth' }); closeNavMenu();" class="nav-link nav-underline transition tracking-wide w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-purple-50/60 hover:text-purple-700 focus:bg-purple-100/80 focus:text-purple-700 duration-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-purple-400 animate-pulse sm:hidden"></span>
+              Portfolio
+            </a>
+          </li>
+          <li class="w-full">
+            <a href="#contact-section" onclick="event.preventDefault(); document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' }); closeNavMenu();" class="nav-link nav-underline transition tracking-wide w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-purple-50/60 hover:text-purple-700 focus:bg-purple-100/80 focus:text-purple-700 duration-200">
+              <span class="inline-block w-2 h-2 rounded-full bg-purple-300 animate-pulse sm:hidden"></span>
+              Contact
+            </a>
+          </li>
+        </ul>
+        <span class="hidden sm:inline-block ml-4 animate-pulse">
+          <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-opacity="0.2"/>
+            <path d="M12 6v6l4 2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </div>
+      <style>
+        @media (max-width: 639px) {
+          #nav-menu {
+            box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18), 0 1.5px 8px 0 rgba(168,139,250,0.10);
+            animation: navMenuPop 0.35s cubic-bezier(.4,0,.2,1);
+            min-width: 120px;
+            max-width: 90vw;
+          }
+          @keyframes navMenuPop {
+            0% { transform: translateY(-20px) scale(0.95); opacity: 0; }
+            100% { transform: translateY(0) scale(1); opacity: 1; }
+          }
+          #nav-menu li {
+            width: 100%;
+          }
+          #nav-menu a {
+            font-size: 1rem;
+            letter-spacing: 0.01em;
+            font-weight: 600;
+            text-align: left;
+            position: relative;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+          }
+          #nav-menu a:active {
+            background: linear-gradient(90deg, #6366f1 0%, #a78bfa 100%);
+            color: #fff !important;
+            box-shadow: 0 2px 12px 0 rgba(99,102,241,0.10);
+          }
+          #nav-toggle {
+            width: 2.25rem !important;
+            height: 2.25rem !important;
+            min-width: 2.25rem !important;
+            min-height: 2.25rem !important;
+          }
+          #nav-toggle-icon {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+          }
+          .nav-glass {
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+            padding-top: 0.375rem !important;
+            padding-bottom: 0.375rem !important;
+          }
+        }
+      </style>
+      <script>
+        // Mobile nav toggle logic
+        const navToggle = document.getElementById('nav-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        let navOpen = false;
+
+        function openNavMenu() {
+          navMenu.classList.remove('opacity-0', 'pointer-events-none');
+          navMenu.classList.add('opacity-100', 'pointer-events-auto');
+          navOpen = true;
+          // Animate icon to X
+          document.getElementById('nav-toggle-bar1').setAttribute('d', 'M6 6l12 12');
+          document.getElementById('nav-toggle-bar2').setAttribute('d', '');
+          document.getElementById('nav-toggle-bar3').setAttribute('d', 'M6 18l12-12');
+          // Add fun pop effect to menu
+          navMenu.style.animation = 'navMenuPop 0.35s cubic-bezier(.4,0,.2,1)';
+        }
+        function closeNavMenu() {
+          navMenu.classList.add('opacity-0', 'pointer-events-none');
+          navMenu.classList.remove('opacity-100', 'pointer-events-auto');
+          navOpen = false;
+          // Animate icon back to hamburger
+          document.getElementById('nav-toggle-bar1').setAttribute('d', 'M4 7h16');
+          document.getElementById('nav-toggle-bar2').setAttribute('d', 'M4 12h16');
+          document.getElementById('nav-toggle-bar3').setAttribute('d', 'M4 17h16');
+          navMenu.style.animation = '';
+        }
+
+        // Toggle menu on button click
+        navToggle.addEventListener('click', function() {
+          if (navOpen) {
+            closeNavMenu();
+          } else {
+            openNavMenu();
+          }
+        });
+
+        // Close menu when clicking outside (on mobile)
+        document.addEventListener('click', function(event) {
+          if (
+            navOpen &&
+            !navMenu.contains(event.target) &&
+            !navToggle.contains(event.target)
+          ) {
+            closeNavMenu();
+          }
+        });
+
+        // Ensure menu closes on resize to desktop
+        window.addEventListener('resize', function() {
+          if (window.innerWidth >= 640) {
+            closeNavMenu();
+          }
+        });
+      </script>
+    </nav>
+    <!-- Profile Card with extra margin top -->
+    <div class="flex flex-1 items-center justify-center px-2 sm:px-0 mt-40 sm:mt-56">
+      <div class="glass rounded-3xl shadow-2xl flex flex-col md:flex-row w-full max-w-3xl overflow-hidden scale-100 sm:scale-105 md:scale-110 transition-all duration-500">
+        <!-- Profile Image (Left) -->
+        <div class="relative flex items-center justify-center bg-gradient-to-tr from-blue-100/60 to-purple-100/60 md:w-1/3 py-10 md:py-0">
+          <div class="flex flex-col items-center">
+            <div class="profile-glow rounded-full p-1 bg-gradient-to-tr from-blue-200 via-purple-200 to-blue-100 mb-4 shine">
+              <img
+                src="img/1.png"
+                alt="Joshua Martin"
+                class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 object-cover rounded-full shadow-xl border-4 border-white"
+              />
+            </div>
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center shadow-md">
+              <span class="font-bold text-blue-600 text-xl">JM</span>
+            </div>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="flex-1 flex flex-col justify-center px-8 py-10 md:py-16">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-800 mb-2 sm:mb-4 tracking-tight shine">Joshua Martin</h1>
+          <p class="text-gray-500 mb-8 max-w-xl text-base sm:text-lg md:text-xl leading-relaxed">
+            <span class="inline-block bg-blue-50 px-2 py-1 rounded text-blue-700 font-medium mb-2">Web Developer & IT Specialist</span><br>
+            Hi, I'm a web developer with a <br>
+            <span class="text-blue-600 font-semibold">creative eye</span> and <span class="text-purple-600 font-semibold">tech-driven mindset</span> I build sleek, functional websites and real-world solutions for modern users.
+          </p>
+          <div class="flex gap-4">
+            <a href="resume.pdf" download class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3 rounded-lg shadow-lg transition flex items-center gap-3 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shine">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+              </svg>
+              Download CV
+            </a>
+            <button onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' });" class="bg-white hover:bg-blue-50 text-blue-600 border border-blue-200 font-semibold px-7 py-3 rounded-lg shadow transition flex items-center gap-2 text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-200 focus:ring-offset-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+              Let's Connect
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <section id="about-section" class="flex flex-col items-center justify-center scroll-mt-[200px] mt-[300px] sm:mt-[350px] px-2 sm:px-6 lg:px-12">
+   <div class="w-full max-w-7xl glass rounded-3xl shadow-2xl p-4 sm:p-10 md:p-16">
+      <h1 class="text-4xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-700">
+            Crafting Digital Futures, One Line of Code at a Time
+        </h1>
+
+        <p class="text-lg leading-relaxed mb-8 text-center md:text-left">
+            I am a versatile <span class="font-bold text-blue-700">Web Developer</span> and <span class="font-bold text-indigo-700">IT Specialist</span>. My passion is building functional, scalable web experiences with a creative touch and a tech-driven approach. I love transforming ideas into elegant, real-world applications.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+                <h2 class="text-2xl font-bold mb-4 text-blue-600 flex items-center">
+                    <span class="mr-2 text-3xl">🛠️</span> My Core Toolkit
+                </h2>
+                <ul class="list-disc list-inside space-y-2 text-gray-700 text-base">
+                    <li><span class="font-semibold text-gray-800">Frontend:</span> HTML5, CSS3 (Tailwind CSS, SCSS, Bootstrap), JavaScript (ES6+)</li>
+                    <li><span class="font-semibold text-gray-800">Backend:</span> PHP (Laravel), RESTful API Development</li>
+                    <li><span class="font-semibold text-gray-800">Database:</span> MySQL</li>
+                    <li><span class="font-semibold text-gray-800">CMS & Tools:</span> WordPress Development, Git, Basic Cloud Deployment, IT Support</li>
+                </ul>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-4 text-purple-600 flex items-center">
+                    <span class="mr-2 text-3xl">💡</span> My Philosophy
+                </h2>
+                <p class="text-gray-700 text-base leading-relaxed">
+                    I focus on **user-centricity and technical excellence**. I build great web applications that are intuitive and built with clean, efficient, and maintainable code. Continuous learning ensures my solutions are modern and future-proof.
+                </p>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Portfolio Section (hidden until scrolled to), with extra margin top -->
+    <section id="portfolio-section" class="flex flex-col items-center justify-center scroll-mt-[75px] mt-[300px] sm:mt-[350px] px-2 sm:px-6 lg:px-12">
+     
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-10 tracking-tight shine text-center">Internal Projects</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+          <!-- Portfolio Item 1 -->
+          <div class="group bg-gradient-to-br from-blue-50 via-white to-purple-50 rounded-2xl shadow-xl p-0 flex flex-col items-stretch hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 cursor-pointer w-full border border-transparent hover:border-blue-200 relative overflow-hidden" onclick="openModal('project1')">
+            <!-- Tech Stack Row -->
+            <div class="absolute top-4 left-4 flex flex-row gap-2 z-10">
+              <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium shadow">PHP</span>
+              <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium shadow">JS</span>
+              <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium shadow">MySQL</span>
+              <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium shadow">Tailwind CSS</span>
+            </div>
+            <!-- Interactive Image with overlay -->
+            <div class="relative rounded-t-2xl w-full h-72 sm:h-80 md:h-96 flex items-center justify-center bg-gray-100 overflow-hidden">
+              <img src="img/portfolioModal1.png" alt="Rusty Lopez Dashboard Screenshot" class="rounded-t-2xl shadow border w-full max-w-2xl object-contain bg-white h-full transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'">
+              <div class="absolute inset-0 bg-gradient-to-t from-blue-700/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                <span class="text-white text-sm font-semibold bg-blue-600/80 px-4 py-2 rounded-lg shadow-lg">View Details</span>
+              </div>
+            </div>
+            <div class="flex-1 flex flex-col items-center px-6 py-7">
+              <h3 class="font-extrabold text-xl sm:text-2xl mb-2 text-center text-blue-900 group-hover:text-blue-700 transition-colors duration-200">Rusty Lopez Warehouse Operations System</h3>
+              <p class="text-gray-500 text-base sm:text-lg text-center mb-4 line-clamp-3">A comprehensive sales and inventory management system built for Rusty Lopez, featuring real-time analytics and a modern dashboard.</p>
+              <div class="flex flex-wrap gap-2 justify-center mt-auto">
+                <span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-medium">Company Internal System</span>
+              </div>
+            </div>
+            <div class="absolute right-4 top-4">
+              <svg class="w-7 h-7 text-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Portfolio Item 2 -->
+          <div class="group bg-gradient-to-br from-purple-50 via-white to-blue-50 rounded-2xl shadow-xl p-0 flex flex-col items-stretch hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 cursor-pointer w-full border border-transparent hover:border-purple-200 relative overflow-hidden" onclick="openModal('project2')">
+            <!-- Tech Stack Row -->
+            <div class="absolute top-4 left-4 flex flex-row gap-2 z-10">
+              <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium shadow">PHP</span>
+              <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium shadow">JS</span>
+              <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium shadow">MySQL</span>
+              <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium shadow">Tailwind CSS</span>
+            </div>
+            <!-- Interactive Image with overlay -->
+            <div class="relative rounded-t-2xl w-full h-72 sm:h-80 md:h-96 flex items-center justify-center bg-gray-100 overflow-hidden">
+              <img src="img/imall.jpg" alt="E-commerce Platform Screenshot" class="rounded-t-2xl shadow border w-full max-w-2xl object-contain bg-white h-full transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'">
+              <div class="absolute inset-0 bg-gradient-to-t from-purple-700/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                <span class="text-white text-sm font-semibold bg-purple-600/80 px-4 py-2 rounded-lg shadow-lg">View Details</span>
+              </div>
+            </div>
+            <div class="flex-1 flex flex-col items-center px-6 py-7">
+              <h3 class="font-extrabold text-xl sm:text-2xl mb-2 text-center text-blue-900 group-hover:text-purple-700 transition-colors duration-200">Acknowledge Report Receipt System</h3>
+              <p class="text-gray-500 text-base sm:text-lg text-center mb-4 line-clamp-3">A web-based system for managing and generating temporary acknowledge report receipts, streamlining the documentation process.
+                Internal System - Company Portal Only...</p>
+              <div class="flex flex-wrap gap-2 justify-center mt-auto">
+                <span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-medium">Company Internal System</span>
+              </div>
+            </div>
+            <div class="absolute right-4 top-4">
+              <svg class="w-7 h-7 text-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Portfolio Item 3 -->
+          <div class="group bg-gradient-to-br from-green-50 via-white to-blue-100 rounded-2xl shadow-xl p-0 flex flex-col items-stretch hover:scale-[1.03] hover:shadow-2xl transition-all duration-300 cursor-pointer w-full border border-transparent hover:border-green-200 relative overflow-hidden" onclick="openModal('project3')">
+            <!-- Tech Stack Row -->
+            <div class="absolute top-4 left-4 flex flex-row gap-2 z-10">
+              <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium shadow">PHP</span>
+              <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium shadow">JS</span>
+              <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium shadow">MySQL</span>
+              <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium shadow">Tailwind CSS</span>
+            </div>
+            <!-- Interactive Image with overlay -->
+            <div class="relative rounded-t-2xl w-full h-72 sm:h-80 md:h-96 flex items-center justify-center bg-gray-100 overflow-hidden">
+              <img src="img/lclopez.jpg" alt="E-commerce Platform Screenshot" class="rounded-t-2xl shadow border w-full max-w-2xl object-contain bg-white h-full transition-transform duration-300 group-hover:scale-105" onerror="this.style.display='none'">
+              <div class="absolute inset-0 bg-gradient-to-t from-green-700/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-4">
+                <span class="text-white text-sm font-semibold bg-green-600/80 px-4 py-2 rounded-lg shadow-lg">View Details</span>
+              </div>
+            </div>
+            <div class="flex-1 flex flex-col items-center px-6 py-7">
+              <h3 class="font-extrabold text-xl sm:text-2xl mb-2 text-center text-blue-900 group-hover:text-green-700 transition-colors duration-200">LC Lopez Resources</h3>
+              <p class="text-gray-500 text-base sm:text-lg text-center mb-4 line-clamp-3">A comprehensive website for managing daily collections from tenants in the market, integrated with Sunmi V2S POS system for efficient payment processing and tracking.- Company Portal Only...</p>
+              <div class="flex flex-wrap gap-2 justify-center mt-auto">
+                <span class="bg-blue-50 text-blue-600 px-2 py-1 rounded text-xs font-medium">Company Internal System</span>
+              </div>
+            </div>
+            <div class="absolute right-4 top-4">
+              <svg class="w-7 h-7 text-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </div>
+          </div>
+    </section>
+
+    <!-- Portfolio Modal -->
+    <div id="portfolio-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+      <div class="bg-white rounded-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-2xl font-bold text-gray-800" id="modal-title"></h3>
+            <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div id="modal-content" class="space-y-4">
+            <!-- Content will be dynamically inserted here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Contact Section -->
+    <section id="contact-section" class="flex flex-col items-center justify-center min-h-screen py-16 px-2 sm:px-6 lg:px-12">
+        <div id="contact-content" class="w-full glass rounded-3xl shadow-2xl p-4 sm:p-10 md:p-16 animate-fade-in-scale">
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-10 tracking-tight shine text-center">Get in Touch</h2>
+            <p class="text-lg leading-relaxed mb-8 text-center text-gray-700">
+                Have a project in mind, a question, or just want to say hello? Feel free to reach out through the form below or connect with me via social media.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Contact Form -->
+                <div>
+                    <!-- 
+                        To use your Formspree endpoint, replace the form's action attribute with the provided endpoint URL.
+                        Paste the endpoint URL here:
+                        https://formspree.io/f/xrgnkqoq
+                        Example:
+                        <form action="https://formspree.io/f/xrgnkqoq" method="POST" ...>
+                    -->
+                    <form action="https://formspree.io/f/xrgnkqoq" method="POST" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" id="name" name="name" required
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white/70 backdrop-blur-sm">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" name="email" required
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white/70 backdrop-blur-sm">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                            <input type="text" id="subject" name="subject"
+                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white/70 backdrop-blur-sm">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" name="message" rows="5" required
+                                      class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white/70 backdrop-blur-sm"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Contact Info & Social Media -->
+                <div class="space-y-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-purple-700 mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M17.6 15.6l-3.3-3.3c-.6-.6-.6-1.5 0-2.1l3.3-3.3c.6-.6.6-1.5 0-2.1l-2.1-2.1c-.6-.6-1.5-.6-2.1 0l-3.3 3.3c-.6.6-1.5.6-2.1 0l-3.3-3.3c-.6-.6-1.5-.6-2.1 0l-2.1 2.1c-.6.6-.6 1.5 0 2.1l3.3 3.3c.6.6.6 1.5 0 2.1l-3.3 3.3c-.6.6-.6 1.5 0 2.1l2.1 2.1c.6.6 1.5.6 2.1 0l3.3-3.3c.6-.6 1.5-.6 2.1 0l3.3 3.3c.6.6.6 1.5 0 2.1l2.1-2.1c.6-.6.6-1.5 0-2.1z"/>
+                            </svg>
+                            Direct Contact
+                        </h3>
+                        <p class="text-gray-600 flex items-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            Email: <a href="mailto:martin.joshua0109@gmail.com" class="text-blue-600 hover:underline">martin.joshua0109@gmail.com</a>
+                        </p>
+                        <p class="text-gray-600 flex items-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.135a11.249 11.249 0 005.429 5.429l1.135-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" />
+                            </svg>
+                            Phone: <a href="tel:+639915186502" class="text-blue-600 hover:underline" onclick="window.location.href='tel:+639915186502'">+63 991-518-6502</a>
+                        </p>
+                        <p class="text-gray-600 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Location: Manila, Philippines
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-purple-700 mb-4 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 mr-2 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-.758l-.01.01m-6.04-6.04a4 4 0 000 5.656l4 4a4 4 0 105.656-5.656l-.37-.37m1.102-1.101l.01-.01" />
+                            </svg>
+                            Connect Online
+                        </h3>
+                        <div class="flex space-x-4">
+                            <a href="https://linkedin.com/in/joshuamartin" target="_blank" class="text-gray-600 hover:text-blue-700 transition-colors duration-200" aria-label="LinkedIn">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2c-1.1 0-2 .9-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 110-4 2 2 0 010 4z" />
+                                </svg>
+                            </a>
+                            <a href="https://github.com/joshuamartin" target="_blank" class="text-gray-600 hover:text-purple-700 transition-colors duration-200" aria-label="Facebook">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.866 8.17 6.84 9.49.5.09.68-.22.68-.48V19.4c-2.78.6-3.37-1.34-3.37-1.34-.45-1.15-1.1-1.46-1.1-1.46-.9-.6.07-.6.07-.6 1.05.07 1.6 1.08 1.6 1.08.93 1.58 2.45 1.12 3.05.86.09-.67.36-1.12.65-1.38-2.33-.26-4.78-1.17-4.78-5.2C7.3 9.47 8.5 8.76 9.5 8.7c-.09-.26-.3-.7-.07-1.1-.9-.27-.2-2.58.2-2.85 0 0 .75-.26 2.46 1.05.7-.19 1.45-.28 2.2-.28.75 0 1.5.09 2.2.28 1.7-1.31 2.45-1.05 2.45-1.05.4 2.1.07 2.58-.2 2.85.22.4.07.84-.07 1.1.99.07 2.19.77 2.19 3.07 0 4.04-2.45 4.94-4.78 5.2.29.25.56.76.65 1.38v2.01c0 .26.18.57.68.48C21.134 20.17 24 16.42 24 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                            <!-- Add more social media links as needed -->
+                            <!-- Example for Twitter (X) -->
+                            <!-- <a href="https://twitter.com/joshuamartin" target="_blank" class="text-gray-600 hover:text-blue-400 transition-colors duration-200" aria-label="Twitter">
+                                <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.25l-6.072-8.03L3.52 22.25H.107L7.437 13.06 0 2.25h8.55L12 9.882 18.244 2.25zM17.487 20.2H19.2L8.71 4.2H6.55L17.487 20.2z"/></svg>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+      const portfolioProjects = {
+        "project1": {
+          title: "Rusty Lopez Warehouse Operations System",
+          content: `
+            <div class="space-y-6">
+              <div class="w-full flex flex-col md:flex-row gap-6">
+                <div class="flex-1 flex items-center justify-center min-h-[300px] bg-gray-100 rounded-lg border border-dashed border-gray-300">
+                  <img src="img/portfolioModal1.png" alt="Rusty Lopez Dashboard Screenshot" class="rounded-lg shadow border w-full max-w-md object-contain bg-white"
+                    onerror="this.style.display='none'; this.parentNode.innerHTML='<div class=&quot;text-center w-full py-16 text-gray-400 flex flex-col items-center justify-center&quot;><svg xmlns=&quot;http://www.w3.org/2000/svg&quot; class=&quot;h-12 w-12 mx-auto mb-2&quot; fill=&quot;none&quot; viewBox=&quot;0 0 24 24&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot;><path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; d=&quot;M9 17v-2a4 4 0 018 0v2M9 17a4 4 0 01-8 0v-2a4 4 0 018 0v2zm0 0v-2a4 4 0 018 0v2m-8 0a4 4 0 01-8 0v-2a4 4 0 018 0v2zm0 0v-2a4 4 0 018 0v2&quot; /></svg><span class=&quot;text-base&quot;>Image not available</span><br><span class=&quot;text-xs&quot;>It may have been moved, edited, or deleted.</span></div>';">
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                  <h4 class="text-xl font-semibold text-blue-700 mb-2">Project Overview</h4>
+                  <p class="text-gray-700 mb-3">
+                    The <span class="font-semibold text-blue-600">Rusty Lopez Warehouse Operations System</span> is a comprehensive web application designed to streamline inventory management and delivery logistics for Rusty Lopez warehouses. It features real-time stock tracking, detailed delivery scheduling and reporting, and user-friendly interfaces for warehouse staff and management.
+                  </p>
+                  <div class="flex flex-wrap gap-2 mt-2">
+                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">PHP</span>
+                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">JS</span>
+                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium">MySQL</span>
+                    <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">Tailwind CSS</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Key Features</h4>
+                <ol class="list-decimal pl-6 text-gray-700 space-y-1">
+                  <li>Intuitive dashboard for a quick overview of inventory and outgoing deliveries.</li>
+                  <li>Real-time inventory updates and detailed product stock management, including location tracking.</li>
+                  <li>Comprehensive delivery reporting with details on destination, date, time, and status for efficient logistics.</li>
+                  <li>Secure authentication and user management with role-based access for warehouse personnel.</li>
+                  <li>Responsive design for seamless access and management on various devices, including mobile.</li>
+                </ol>
+              </div>
+            </div>
+              <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                <button onclick="showDemo('portfolio1.html')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition text-center">View Demo</button>
+              </div>
+            </div>
+          `
+        },
+        "project2": {
+          title: "Acknowledge Report Receipt System",
+          content: `
+            <div class="space-y-6">
+              <div class="w-full flex flex-col md:flex-row gap-6">
+                <div class="flex-1 flex items-center justify-center">
+                  <img src="img/imall.jpg" alt="Project 2 Screenshot" class="rounded-lg shadow border w-full max-w-md object-contain bg-white">
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                  <h4 class="text-xl font-semibold text-purple-700 mb-2">Project Overview</h4>
+                  <p class="text-gray-700 mb-3">
+                    The <span class="font-semibold text-purple-600">Acknowledge Report Receipt System</span> is an internal web-based solution designed to streamline the documentation process for report receipts. It provides a secure and efficient way to generate, manage, and track temporary acknowledge report receipts within the company portal.
+                  </p>
+                  <div class="flex flex-wrap gap-2 mt-2">
+                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">PHP</span>
+                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">JS</span>
+                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium">MySQL</span>
+                    <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">Tailwind CSS</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Key Features</h4>
+                <ol class="list-decimal pl-6 text-gray-700 space-y-1">
+                  <li>Automated Temporary Receipt Generation: Efficiently creates and manages temporary transaction receipts.</li>
+                  <liSales & Transaction Previews: Allows users to preview total sales figures and specific transaction dates..</li>
+                  <li>Secure Document Management: Features secure storage with version control for all generated receipts.</li>
+                  <li>Intuitive User Interface: Designed for easy navigation and quick report/receipt management..</li>
+                  <li>Role-Based Security: Ensures data protection and controlled access based on user roles.</li>
+                  <li>Integrated Workflow: Seamlessly connects with the existing company portal for smooth operations.</li>
+                </ol>
+              </div>
+              <!-- No demo button since there is no HTML file for this project -->
+            </div>
+          `
+        },"project3": {
+          title: "LC Lopez Resources",
+          content: `
+            <div class="space-y-6">
+              <div class="w-full flex flex-col md:flex-row gap-6">
+                <div class="flex-1 flex items-center justify-center">
+                  <img src="img/lclopez.jpg" alt="Project 2 Screenshot" class="rounded-lg shadow border w-full max-w-md object-contain bg-white">
+                </div>
+                <div class="flex-1 flex flex-col justify-center">
+                  <h4 class="text-xl font-semibold text-purple-700 mb-2">Project Overview</h4>
+                  <p class="text-gray-700 mb-3">
+                    The <span class="font-semibold text-purple-600">Daily Collections Management Website</span>is a comprehensive web-based platform designed to streamline and enhance the process of managing daily payments from market tenants. By integrating seamlessly with the Sunmi V2S POS system, this solution enables efficient, real-time payment processing and robust tracking of all collections. Its primary goal is to centralize financial data, improve accountability, and simplify the overall documentation and management of daily revenues for market operations.
+                  </p>
+                  <div class="flex flex-wrap gap-2 mt-2">
+                    <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">PHP</span>
+                    <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-medium">JS</span>
+                    <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-medium">MySQL</span>
+                    <span class="bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs font-medium">Tailwind CSS</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Key Features</h4>
+                <ol class="list-decimal pl-6 text-gray-700 space-y-1">
+                  <li>Daily Collection Tracking: Comprehensive management of daily payments received from market tenants.</li>
+                  <li>Tenant & Payment Management: Tools for organizing tenant information and recording payment details.</li>
+                  <li>Sunmi V2S POS Integration: Seamless connection with the Sunmi V2S POS system for fast and accurate payment processing.</li>
+                  <li>Real-time Payment Tracking: Ability to monitor and track collection status in real-time.</li>
+                  <li>Reporting & Analytics: Generation of reports related to collections, payments, and tenant accounts.</li>
+                  <li>Secure Data Handling: Ensures the security of sensitive financial and tenant information.</li>
+                  <li>User-Friendly Interface: Intuitive design for efficient use by collection staff.</li>
+                </ol>
+              </div>
+              <!-- No demo button since there is no HTML file for this project -->
+            </div>
+          `
+        }
+      };
+
+      function openModal(projectId) {
+        const modal = document.getElementById('portfolio-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+
+        // Show modal
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        // Load content from local JS object
+        if (portfolioProjects[projectId]) {
+          modalTitle.textContent = portfolioProjects[projectId].title;
+          modalContent.innerHTML = portfolioProjects[projectId].content;
+        } else {
+          modalTitle.textContent = "Project Not Found";
+          modalContent.innerHTML = "<p class='text-gray-500'>Sorry, details for this project are not available.</p>";
+        }
+      }
+
+      function closeModal() {
+        const modal = document.getElementById('portfolio-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+
+      // Close modal when clicking outside
+      document.getElementById('portfolio-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal();
+        }
+      });
+      function showDemo(url) {
+        document.getElementById('modal-content').innerHTML = `<iframe src="${url}" class="w-full h-[70vh] rounded-lg border" frameborder="0"></iframe>`;
+      }
+    </script>
+    <!-- Mobile Download Icon Only -->
+    <a href="resume.pdf" download class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg p-4 sm:p-5 z-50 md:hidden flex items-center justify-center transition shine" title="Download CV" aria-label="Download CV">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" /></svg>
+    </a>
+  </div>
+  
+ 
+</body>
+</html>
